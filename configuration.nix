@@ -42,6 +42,15 @@
   services.libinput.enable = true;
   xdg.portal.enable = true;
 
+  # Configure Flathub remote
+  systemd.services.flatpak-repo = {
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.flatpak ];
+    script = ''
+      flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    '';
+  };
+
   # User account
   users.users.rob = {
     isNormalUser = true;
