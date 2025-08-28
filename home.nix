@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs ? {}, ... }:
 
 {
   # Let Home Manager manage itself
@@ -21,6 +21,9 @@
     obs-studio
     onlyoffice-bin
     qbittorrent
+    slack
+    spotify
+    vscode
     
     # Development (user-specific)
     nodejs
@@ -33,21 +36,15 @@
     gnome-tweaks
     gnomeExtensions.appindicator
     gnomeExtensions.dash-to-dock
-    gnomeExtensions.pop-shell  # tiling if you're into that
+    gnomeExtensions.pop-shell
     
-    # Other useful GUI apps you might want
-    # discord
-    # slack
-    # spotify
-    # thunderbird
-    # vscode
   ];
 
   # Git setup - you can expand this with more config
   programs.git = {
     enable = true;
     userName = "Rob";
-    userEmail = "your-real-email@example.com";  # Update this!
+    userEmail = "rob@maurizio.ooo";
     
     # Add some useful git config
     extraConfig = {
@@ -64,23 +61,23 @@
     };
   };
 
-  # Shell setup - you can configure zsh more extensively
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    
-    # Let your dotfiles handle aliases and custom config
-    # Don't duplicate stuff here if your dotfiles already do it
-    
-    # Oh My Zsh if you want it (optional)
-    # oh-my-zsh = {
-    #   enable = true;
-    #   theme = "robbyrussell";
-    #   plugins = [ "git" "sudo" "docker" ];
-    # };
-  };
+  # Shell setup - let your dotfiles handle this instead
+  # programs.zsh = {
+  #   enable = true;
+  #   enableCompletion = true;
+  #   autosuggestion.enable = true;
+  #   syntaxHighlighting.enable = true;
+  #   
+  #   # Let your dotfiles handle aliases and custom config
+  #   # Don't duplicate stuff here if your dotfiles already do it
+  #   
+  #   # Oh My Zsh if you want it (optional)
+  #   # oh-my-zsh = {
+  #   #   enable = true;
+  #   #   theme = "robbyrussell";
+  #   #   plugins = [ "git" "sudo" "docker" ];
+  #   # };
+  # };
 
   # Firefox config - you can expand this a lot
   programs.firefox = {
@@ -95,14 +92,14 @@
         "browser.shell.checkDefaultBrowser" = false;
         "browser.tabs.warnOnClose" = false;
       };
-      # Fixed format for extensions
-      extensions.packages = with pkgs.firefox-addons; [
-        bitwarden-password-manager
+      # Extensions (now available through flake inputs)
+      extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
+        bitwarden
         multi-account-containers
         noscript
         ublock-origin
-        # joplin-web-clipper  # might not be available in standard pkgs
-        # linkding-extension  # might not be available in standard pkgs
+        # joplin-web-clipper  # uncomment if available
+        # linkding-extension  # uncomment if available
       ];
     };
   };
