@@ -9,16 +9,7 @@
   # compatible with. Don't change this unless you know what you're doing!
   home.stateVersion = "25.05";
 
-  # Flatpak applications - these work better as flatpaks
-  services.flatpak = {
-    packages = [
-      "com.1password.1Password"
-      "com.beeper.Beeper"
-      "com.slack.Slack"
-      "com.spotify.Client"
-      "us.zoom.Zoom"
-    ];
-  };
+  # Flatpak apps will be installed manually after first boot
 
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
