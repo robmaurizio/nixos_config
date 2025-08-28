@@ -59,7 +59,6 @@
     lshw
     nano
     neofetch
-    networkmanager-applet
     pciutils
     tree
     unzip
