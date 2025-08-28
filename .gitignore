@@ -1,0 +1,11 @@
+# Don't include hardware-specific config (this is unique to your machine)
+hardware-configuration.nix
+
+# Ignore build results
+result*
+
+# Lock file
+# flake.lock
+
+# Any secrets or private info
+secrets/
