@@ -33,6 +33,10 @@
   services.printing.enable = true;
   services.openssh.enable = true;
 
+  # Flatpak portals (better integration)
+  xdg.portal.enable = true;
+  xdg.portal.gtkUsePortal = true;
+
   # User
   users.users.rob = {
     isNormalUser = true;
@@ -45,29 +49,12 @@
     user = "rob";
   };
 
-  # Packages
-  nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [
-    # Basic tools
-    git
-    vim
-    
-    # Applications
-    firefox
-    _1password-gui
-    bitwarden
-    calibre
-    copyq
-    python3
-    qbittorrent
-    obs-studio
-    joplin-desktop
-    onlyoffice-bin
-    appimage-run
-    
-    # GNOME extras
-    gnome-tweaks
-    gnomeExtensions.appindicator
+  # Fonts
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-emoji
+    liberation_ttf
+    dejavu_fonts
   ];
 
   # Flathub remote
@@ -79,6 +66,16 @@
 
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Automatic garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
+
+  # Allow unfree globally
+  nixpkgs.config.allowUnfree = true;
 
   system.stateVersion = "25.05";
 }
