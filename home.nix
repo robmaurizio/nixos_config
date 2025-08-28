@@ -32,12 +32,14 @@
     gnome-tweaks
     gnomeExtensions.appindicator
     gnomeExtensions.dash-to-dock
-    gnomeExtensions.pop-shell
+    gnomeExtensions.pop-shell  # tiling if you're into that
     
     # Other useful GUI apps you might want
+    # discord
     # slack
     # spotify
-    vscode
+    # thunderbird
+    # vscode
   ];
 
   # Git setup - you can expand this with more config
@@ -67,20 +69,89 @@
   #   enableCompletion = true;
   #   autosuggestion.enable = true;
   #   syntaxHighlighting.enable = true;
+  #   
+  #   # Let your dotfiles handle aliases and custom config
+  #   # Don't duplicate stuff here if your dotfiles already do it
+  #   
+  #   # Oh My Zsh if you want it (optional)
+  #   # oh-my-zsh = {
+  #   #   enable = true;
+  #   #   theme = "robbyrussell";
+  #   #   plugins = [ "git" "sudo" "docker" ];
+  #   # };
   # };
 
-  # Firefox config - you can expand this a lot
+  # Firefox config - expanded with your current preferences
   programs.firefox = {
     enable = true;
     profiles.default = {
       name = "Default";
       settings = {
-        "browser.startup.homepage" = "https://nixos.org";
-        "privacy.resistFingerprinting" = true;
+        # Privacy & Security
+        "privacy.globalprivacycontrol.enabled" = true;
+        "privacy.userContext.enabled" = true;
+        "privacy.userContext.ui.enabled" = true;
+        "privacy.clearOnShutdown_v2.formdata" = true;
+        
+        # Telemetry & Data Collection (disable)
+        "toolkit.telemetry.unified" = false;
+        "toolkit.telemetry.archive.enabled" = false;
+        "toolkit.telemetry.bhrPing.enabled" = false;
+        "toolkit.telemetry.firstShutdownPing.enabled" = false;
+        "toolkit.telemetry.newProfilePing.enabled" = false;
+        "toolkit.telemetry.shutdownPingSender.enabled" = false;
+        "toolkit.telemetry.updatePing.enabled" = false;
+        "datareporting.healthreport.uploadEnabled" = false;
+        "datareporting.policy.dataSubmissionEnabled" = false;
+        "datareporting.usage.uploadEnabled" = false;
+        "app.shield.optoutstudies.enabled" = false;
+        
+        # Network & DNS
+        "network.dns.disableIPv6" = true;
+        "network.dns.disablePrefetch" = true;
+        "network.http.speculative-parallel-limit" = 0;
+        "network.predictor.enabled" = false;
+        "network.prefetch-next" = false;
+        "network.trr.mode" = 2;
+        "network.trr.uri" = "https://dns.nextdns.io/f88fd2";
+        "network.trr.custom_uri" = "https://dns.nextdns.io/f88fd2";
+        
+        # Browser behavior
+        "browser.aboutConfig.showWarning" = false;
+        "browser.discovery.enabled" = false;
         "browser.newtabpage.activity-stream.showSponsored" = false;
         "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.shell.checkDefaultBrowser" = false;
-        "browser.tabs.warnOnClose" = false;
+        "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+        "browser.newtabpage.activity-stream.telemetry" = false;
+        "browser.urlbar.suggest.bookmark" = false;
+        "browser.urlbar.suggest.engines" = false;
+        "browser.urlbar.suggest.openpage" = false;
+        "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;
+        "browser.urlbar.suggest.quicksuggest.sponsored" = false;
+        "browser.urlbar.suggest.recentsearches" = false;
+        "browser.urlbar.suggest.topsites" = false;
+        "browser.urlbar.suggest.trending" = false;
+        "browser.download.always_ask_before_handling_new_types" = true;
+        "browser.compactmode.show" = true;
+        "browser.startup.page" = 3; # Restore previous session
+        
+        # UI & Visual
+        "sidebar.revamp" = true;
+        "sidebar.verticalTabs" = true;
+        "browser.touchmode.auto" = false;
+        
+        # Autofill & Forms
+        "signon.autofillForms" = false;
+        "signon.generation.enabled" = false;
+        "signon.management.page.breach-alerts.enabled" = false;
+        "dom.forms.autocomplete.formautofill" = false;
+        
+        # Font preferences
+        "font.name.sans-serif.x-western" = "Roboto";
+        "font.name.serif.x-western" = "Roboto Serif 14pt";
+        "font.name.monospace.x-western" = "Roboto Mono";
+        "font.minimum-size.x-western" = 9;
       };
       # Extensions (now available through flake inputs)
       extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
@@ -88,11 +159,29 @@
         multi-account-containers
         noscript
         ublock-origin
-      # joplin-web-clipper
-      # linkding-extension
+        # joplin-web-clipper  # uncomment if available
+        # linkding-extension  # uncomment if available
       ];
     };
   };
+
+  # Terminal emulator config if you don't like GNOME Terminal
+  # programs.alacritty = {
+  #   enable = true;
+  #   settings = {
+  #     colors.primary.background = "#1d1f21";
+  #     font.size = 11.0;
+  #   };
+  # };
+
+  # VS Code if you use it
+  # programs.vscode = {
+  #   enable = true;
+  #   extensions = with pkgs.vscode-extensions; [
+  #     bbenoist.nix
+  #     ms-python.python
+  #   ];
+  # };
 
   # Direnv for project-specific environments
   programs.direnv = {
@@ -100,6 +189,12 @@
     enableZshIntegration = true;
     nix-direnv.enable = true;
   };
+
+  # Maybe configure some other programs you use
+  # programs.tmux = {
+  #   enable = true;
+  #   # Add tmux config here
+  # };
 
   # XDG directories and dotfiles management
   xdg.enable = true;
@@ -111,11 +206,17 @@
   # For XDG config files (stuff that goes in ~/.config/)
   # xdg.configFile."alacritty/alacritty.yml".source = ./dotfiles/alacritty.yml;
   # xdg.configFile."nvim".source = ./dotfiles/nvim;  # whole directories work too
+  
+  # OBS dotfiles (if you have them)
+  # xdg.configFile."obs-studio" = {
+  #   source = ./dotfiles/obs-studio;
+  #   recursive = true;
+  # };
 
   # Font configuration (user-specific fonts)
   fonts.fontconfig.enable = true;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.05";  # Match your system version
 }
