@@ -6,22 +6,15 @@
   # Boot
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelModules = [ "wireguard" ];
 
-  # Networking
+  # Basic system config
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
-  networking.firewall.enable = true;
-
-  # Locale
   time.timeZone = "America/Chicago";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Desktop Environment
-  services.xserver = {
-    enable = true;
-    xkb.layout = "us";
-  };
+  # Desktop
+  services.xserver.enable = true;
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
@@ -35,27 +28,15 @@
     pulse.enable = true;
   };
 
-  # Services
-  services.printing.enable = true;
+  # Basic services
   services.flatpak.enable = true;
+  services.printing.enable = true;
   services.openssh.enable = true;
-  services.libinput.enable = true;
-  xdg.portal.enable = true;
 
-  # Configure Flathub remote
-  systemd.services.flatpak-repo = {
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.flatpak ];
-    script = ''
-      flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-    '';
-  };
-
-  # User account
+  # User
   users.users.rob = {
     isNormalUser = true;
-    description = "Robert Maurizio";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "wheel" "networkmanager" ];
   };
 
   # Autologin
@@ -63,22 +44,17 @@
     enable = true;
     user = "rob";
   };
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
 
   # Packages
   nixpkgs.config.allowUnfree = true;
-  programs.firefox.enable = true;
-  
   environment.systemPackages = with pkgs; [
-    # Essential tools
-    wget
-    curl
+    # Basic tools
     git
     vim
-    neovim
     
     # Applications
+    firefox
+    _1password-gui
     bitwarden
     calibre
     copyq
@@ -87,7 +63,6 @@
     obs-studio
     joplin-desktop
     onlyoffice-bin
-    wireguard-tools
     appimage-run
     
     # GNOME extras
@@ -95,13 +70,15 @@
     gnomeExtensions.appindicator
   ];
 
-  # Nix settings
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 1w";
+  # Flathub remote
+  systemd.services.flatpak-repo = {
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.flatpak ];
+    script = "flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo";
   };
+
+  # Enable flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   system.stateVersion = "25.05";
 }
