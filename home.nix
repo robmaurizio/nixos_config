@@ -12,7 +12,7 @@
   home.packages = with pkgs; [
     # Password managers
     _1password-gui
-    bitwarden
+    bitwarden-desktop
 
     # Media & productivity
     calibre
