@@ -88,8 +88,8 @@
         multi-account-containers
         noscript
         ublock-origin
-        joplin-web-clipper
-        linkding-extension
+      # joplin-web-clipper
+      # linkding-extension
       ];
     };
   };
