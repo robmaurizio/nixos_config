@@ -39,7 +39,8 @@
   # User
   users.users.rob = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;  # Set zsh as default shell
   };
 
   # Autologin
@@ -48,12 +49,43 @@
     user = "rob";
   };
 
-  # Fonts
+  # System-wide packages (CLI tools that root might need)
+  environment.systemPackages = with pkgs; [
+    # Essential CLI tools
+    bat
+    curl
+    git
+    htop
+    lshw
+    nano
+    neofetch
+    networkmanager-applet
+    pciutils
+    tree
+    unzip
+    usbutils
+    vim
+    wget
+    xz
+    zip
+  ];
+
+  # Enable shells system-wide
+  programs.zsh.enable = true;  # Required for user shell
+  programs.bash.completion.enable = true;
+
+  # Fonts (system-wide)
   fonts.packages = with pkgs; [
+    dejavu_fonts
+    fira-code
+    fira-code-symbols
+    liberation_ttf
     noto-fonts
     noto-fonts-emoji
-    liberation_ttf
-    dejavu_fonts
+    overpass
+    roboto
+    roboto-mono
+    roboto-serif
   ];
 
   # Flathub remote
@@ -75,6 +107,9 @@
 
   # Allow unfree globally
   nixpkgs.config.allowUnfree = true;
+
+  # Enable locate database (useful for finding files)
+  services.locate.enable = true;
 
   system.stateVersion = "25.05";
 }
