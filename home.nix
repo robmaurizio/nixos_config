@@ -1,161 +1,121 @@
-{ config, pkgs, inputs ? {}, ... }:
+{ config, pkgs, ... }:
 
 {
-  # Let Home Manager manage itself
-  programs.home-manager.enable = true;
+  imports = [ ./hardware-configuration.nix ];
 
-  # Set home directory and user
-  home.username = "rob";
-  home.homeDirectory = "/home/rob";
+  # Boot
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  # User packages - mostly GUI apps and user-specific tools
-  home.packages = with pkgs; [
-    # Password managers
-    _1password-gui
-    bitwarden-desktop
+  # Basic system config
+  networking.hostName = "nixos";
+  networking.networkmanager.enable = true;
+  time.timeZone = "America/Chicago";
+  i18n.defaultLocale = "en_US.UTF-8";
 
-    # Media & productivity
-    calibre
-    copyq
-    joplin-desktop
-    obs-studio
-    onlyoffice-bin
-    qbittorrent
-    slack
-    spotify
-    vscode
-    
-    # Development (user-specific)
-    nodejs
-    python3
-    
-    # Utilities
-    appimage-run
-    
-    # GNOME extras
-    gnome-tweaks
-    gnomeExtensions.appindicator
-    gnomeExtensions.dash-to-dock
-    gnomeExtensions.pop-shell
-    
+  # Desktop
+  services.xserver.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
+
+  # Audio
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # Basic services
+  services.flatpak = {
+    enable = true;
+    packages = [
+      "com.bitwarden.desktop"
+    ];
+  };
+  services.printing.enable = true;
+  services.openssh.enable = true;
+
+  # Flatpak portals (better integration)
+  xdg.portal.enable = true;
+
+  # User
+  users.users.rob = {
+    isNormalUser = true;
+    extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;  # Set zsh as default shell
+  };
+
+  # Autologin
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "rob";
+  };
+
+  # System-wide packages (CLI tools that root might need)
+  environment.systemPackages = with pkgs; [
+    bat
+    curl
+    git
+    htop
+    lshw
+    nano
+    neofetch
+    pciutils
+    tree
+    unzip
+    usbutils
+    vim
+    wget
+    xz
+    zip
   ];
 
-  # Git setup - you can expand this with more config
-  programs.git = {
-    enable = true;
-    userName = "Rob";
-    userEmail = "rob@maurizio.ooo";
-    
-    # Add some useful git config
-    extraConfig = {
-      init.defaultBranch = "main";
-      pull.rebase = false;
-      core.editor = "vim";
-    };
-    
-    # Maybe add some aliases
-    aliases = {
-      br = "branch";
-      co = "checkout";
-      st = "status";
-    };
+  # Enable shells system-wide
+  programs.zsh.enable = true;  # Required for user shell
+  programs.bash.completion.enable = true;
+
+  # Set default shell for new users
+  users.defaultUserShell = pkgs.zsh;
+
+  # Fonts (system-wide)
+  fonts.packages = with pkgs; [
+    dejavu_fonts
+    fira-code
+    fira-code-symbols
+    liberation_ttf
+    noto-fonts
+    noto-fonts-emoji
+    overpass
+    roboto
+    roboto-mono
+    roboto-serif
+  ];
+
+  # Flathub remote
+  systemd.services.flatpak-repo = {
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.flatpak ];
+    script = "flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo";
   };
 
-  # Shell setup - let your dotfiles handle this instead
-  # programs.zsh = {
-  #   enable = true;
-  #   enableCompletion = true;
-  #   autosuggestion.enable = true;
-  #   syntaxHighlighting.enable = true;
-  #   
-  #   # Let your dotfiles handle aliases and custom config
-  #   # Don't duplicate stuff here if your dotfiles already do it
-  #   
-  #   # Oh My Zsh if you want it (optional)
-  #   # oh-my-zsh = {
-  #   #   enable = true;
-  #   #   theme = "robbyrussell";
-  #   #   plugins = [ "git" "sudo" "docker" ];
-  #   # };
-  # };
+  # Enable flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Firefox config - you can expand this a lot
-  programs.firefox = {
-    enable = true;
-    profiles.default = {
-      name = "Default";
-      settings = {
-        "browser.startup.homepage" = "https://nixos.org";
-        "privacy.resistFingerprinting" = true;
-        "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.shell.checkDefaultBrowser" = false;
-        "browser.tabs.warnOnClose" = false;
-      };
-      # Extensions (now available through flake inputs)
-      extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
-        bitwarden
-        multi-account-containers
-        noscript
-        ublock-origin
-        # joplin-web-clipper  # uncomment if available
-        # linkding-extension  # uncomment if available
-      ];
-    };
+  # Automatic garbage collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
   };
 
-  # Terminal emulator config if you don't like GNOME Terminal
-  # programs.alacritty = {
-  #   enable = true;
-  #   settings = {
-  #     colors.primary.background = "#1d1f21";
-  #     font.size = 11.0;
-  #   };
-  # };
+  # Allow unfree globally
+  nixpkgs.config.allowUnfree = true;
 
-  # VS Code if you use it
-  # programs.vscode = {
-  #   enable = true;
-  #   extensions = with pkgs.vscode-extensions; [
-  #     bbenoist.nix
-  #     ms-python.python
-  #   ];
-  # };
+  # Enable locate database (useful for finding files)
+  services.locate.enable = true;
 
-  # Direnv for project-specific environments
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
-
-  # Maybe configure some other programs you use
-  # programs.tmux = {
-  #   enable = true;
-  #   # Add tmux config here
-  # };
-
-  # XDG directories and dotfiles management
-  xdg.enable = true;
-  
-  # Link your existing dotfiles
-  # Example: if you have a ~/.zshrc you want to manage
-  # home.file.".zshrc".source = ./dotfiles/zshrc;
-  
-  # For XDG config files (stuff that goes in ~/.config/)
-  # xdg.configFile."alacritty/alacritty.yml".source = ./dotfiles/alacritty.yml;
-  # xdg.configFile."nvim".source = ./dotfiles/nvim;  # whole directories work too
-  
-  # OBS dotfiles (if you have them)
-  # xdg.configFile."obs-studio" = {
-  #   source = ./dotfiles/obs-studio;
-  #   recursive = true;
-  # };
-
-  # Font configuration (user-specific fonts)
-  fonts.fontconfig.enable = true;
-
-  # This value determines the Home Manager release that your
-  # configuration is compatible with
-  home.stateVersion = "24.05";  # Match your system version
+  system.stateVersion = "25.05";
 }

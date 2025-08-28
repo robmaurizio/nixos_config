@@ -51,7 +51,6 @@
 
   # System-wide packages (CLI tools that root might need)
   environment.systemPackages = with pkgs; [
-    # Essential CLI tools
     bat
     curl
     git
@@ -72,6 +71,9 @@
   # Enable shells system-wide
   programs.zsh.enable = true;  # Required for user shell
   programs.bash.completion.enable = true;
+
+  # Set default shell for new users
+  users.defaultUserShell = pkgs.zsh;
 
   # Fonts (system-wide)
   fonts.packages = with pkgs; [
