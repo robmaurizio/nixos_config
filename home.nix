@@ -35,11 +35,9 @@
     gnomeExtensions.pop-shell
     
     # Other useful GUI apps you might want
-    # discord
     # slack
     # spotify
-    # thunderbird
-    # vscode
+    vscode
   ];
 
   # Git setup - you can expand this with more config
@@ -90,8 +88,8 @@
         multi-account-containers
         noscript
         ublock-origin
-        # joplin-web-clipper  # uncomment if available
-        # linkding-extension  # uncomment if available
+        joplin-web-clipper
+        linkding-extension
       ];
     };
   };
