@@ -16,15 +16,15 @@
 
     # Media & productivity
     calibre
-    qbittorrent
-    obs-studio
-    joplin-desktop
-    onlyoffice-bin
     copyq
+    joplin-desktop
+    obs-studio
+    onlyoffice-bin
+    qbittorrent
     
     # Development (user-specific)
-    python3
     nodejs
+    python3
     
     # Utilities
     appimage-run
@@ -32,17 +32,15 @@
     # GNOME extras
     gnome-tweaks
     gnomeExtensions.appindicator
-    
-    # Maybe add more extensions you like
     gnomeExtensions.dash-to-dock
     gnomeExtensions.pop-shell  # tiling if you're into that
     
     # Other useful GUI apps you might want
     # discord
-    # spotify
     # slack
-    # vscode
+    # spotify
     # thunderbird
+    # vscode
   ];
 
   # Git setup - you can expand this with more config
@@ -60,9 +58,9 @@
     
     # Maybe add some aliases
     aliases = {
-      st = "status";
-      co = "checkout";
       br = "branch";
+      co = "checkout";
+      st = "status";
     };
   };
 
@@ -97,13 +95,14 @@
         "browser.shell.checkDefaultBrowser" = false;
         "browser.tabs.warnOnClose" = false;
       };
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      # Fixed format for extensions
+      extensions.packages = with pkgs.firefox-addons; [
         bitwarden-password-manager
-	joplin-web-clipper
-	linkding-extension
         multi-account-containers
-	noscript
-	ublock-origin
+        noscript
+        ublock-origin
+        # joplin-web-clipper  # might not be available in standard pkgs
+        # linkding-extension  # might not be available in standard pkgs
       ];
     };
   };
