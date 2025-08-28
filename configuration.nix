@@ -35,7 +35,6 @@
 
   # Flatpak portals (better integration)
   xdg.portal.enable = true;
-  xdg.portal.gtkUsePortal = true;
 
   # User
   users.users.rob = {
