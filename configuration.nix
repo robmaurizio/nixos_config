@@ -96,9 +96,9 @@
   ###################################
   users.defaultUserShell = pkgs.zsh;
   
-  ########################
-  # Fonts (system-wide)  #
-  ########################
+  ###################################
+  # Fonts to Install (system-wide)  #
+  ###################################
   fonts.packages = with pkgs; [
     dejavu_fonts
     fira-code
@@ -126,9 +126,9 @@
   #################
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
-  ###########################
-  # Automatic garbage collection
-  ###########################
+  ################################
+  # Automatic garbage collection #
+  ################################
   nix.gc = {
     automatic = true;
     dates = "weekly";
