@@ -110,7 +110,11 @@
         "com.spotify.Client.desktop"
         "com.slack.Slack.desktop"
       ];
-      enabled-extensions = [ "pop-shell@system76.com", "appindicatorsupport@rgcjonas.gmail.com" ];
+      enabled-extensions = [
+        "pop-shell@system76.com"
+        "appindicatorsupport@rgcjonas.gmail.com" 
+        "dash-to-dock@micxgx.gmail.com"
+      ];
       allow-extension-installation = true;
     };
 
