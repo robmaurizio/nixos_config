@@ -127,5 +127,5 @@
   nixpkgs.config.allowUnfree = true;
   # Enable locate database (useful for finding files)
   services.locate.enable = true;
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }

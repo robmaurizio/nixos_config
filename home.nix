@@ -8,37 +8,25 @@
   home.username = "rob";
   home.homeDirectory = "/home/rob";
 
-  # User packages - mostly GUI apps and user-specific tools
+  # User packages
   home.packages = with pkgs; [
-    # Password managers
     _1password-gui
-
-    # Media & productivity
+    appimage-run
     calibre
     copyq
-    joplin-desktop
-    obs-studio
-    onlyoffice-bin
-    qbittorrent
-    slack
-    vscode
-
-    # Development (user-specific)
-    nodejs
-    python3
-
-    # Utilities
-    appimage-run
-
-    # GNOME extras
     gnome-tweaks
     gnomeExtensions.appindicator
     gnomeExtensions.dash-to-dock
     gnomeExtensions.pop-shell
-
-    # Other useful GUI apps you might want
+    joplin-desktop
+    nodejs
+    obs-studio
+    onlyoffice-bin
+    python3
+    qbittorrent
     slack
     spotify
+    vscode
   ];
 
   # dconf settings for GNOME apps
@@ -118,6 +106,7 @@
       pull.rebase = false;
       core.editor = "vim";
     };
+  };
 
   # Shell setup - let your dotfiles handle this instead
   # programs.zsh = {
@@ -128,6 +117,13 @@
   #
   #   # Let your dotfiles handle aliases and custom config
   #   # Don't duplicate stuff here if your dotfiles already do it
+  #
+  #   # Oh My Zsh if you want it (optional)
+  #   # oh-my-zsh = {
+  #   #   enable = true;
+  #   #   theme = "robbyrussell";
+  #   #   plugins = [ "git" "sudo" "docker" ];
+  #   # };
   # };
 
   # Firefox config - expanded with your current preferences
@@ -208,20 +204,11 @@
         multi-account-containers
         noscript
         ublock-origin
-        joplin-web-clipper
-        linkding-extension
+        # joplin-web-clipper  # uncomment if available
+        # linkding-extension  # uncomment if available
       ];
     };
   };
-
-  # Terminal emulator config if you don't like GNOME Terminal
-  # programs.alacritty = {
-  #   enable = true;
-  #   settings = {
-  #     colors.primary.background = "#1d1f21";
-  #     font.size = 11.0;
-  #   };
-  # };
 
   # VS Code if you use it
   # programs.vscode = {
@@ -238,6 +225,12 @@
     enableZshIntegration = true;
     nix-direnv.enable = true;
   };
+
+  # Maybe configure some other programs you use
+  # programs.tmux = {
+  #   enable = true;
+  #   # Add tmux config here
+  # };
 
   # XDG directories and dotfiles management
   xdg.enable = true;
@@ -261,5 +254,5 @@
 
   # This value determines the Home Manager release that your
   # configuration is compatible with
-  home.stateVersion = "25.11";
+  home.stateVersion = "25.11";  # Match your system version
 }
