@@ -8,10 +8,20 @@
   home.username = "rob";
   home.homeDirectory = "/home/rob";
 
+  # Set location for kDrive appimage
+  let
+    kdriveAppImage = "/home/rob/.local/bin/kdrive.AppImage";
+  in
+
   #######################
   # Packages to Install #
   #######################
   home.packages = with pkgs; [
+    # Wrap the AppImage so it’s in PATH
+    (pkgs.runCommand "kdrive" { } ''
+      mkdir -p $out/bin
+      ln -s ${kdriveAppImage} $out/bin/kdrive
+    '')
     _1password-gui
     appimage-run
     calibre
@@ -418,6 +428,20 @@
   # XDG directories and dotfiles management
   ####################################
   xdg.enable = true;
+
+  ############################
+  # XDG Autostart
+  ############################
+  xdg.autostart.programs = [
+    # Existing autostart programs...
+    {
+      name = "kDrive";
+      command = "appimage-run ${kdriveAppImage}";
+      startupNotify = false;
+      hidden = true;  # avoids annoying notification
+    }
+  ];
+
 
   ############################
   # Link your existing dotfiles
