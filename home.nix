@@ -8,7 +8,9 @@
   home.username = "rob";
   home.homeDirectory = "/home/rob";
 
-  # User packages
+  #######################
+  # Packages to Install #
+  #######################
   home.packages = with pkgs; [
     _1password-gui
     appimage-run
@@ -30,7 +32,9 @@
     vscode
   ];
 
-  # dconf settings for GNOME apps
+  ##################################
+  # dconf settings for GNOME apps  #
+  ##################################
   dconf.settings = {
     "org/gnome/Console" = {
       custom-font = "Fira Code 11";
@@ -166,7 +170,9 @@
     };
   };
 
-  # Git setup - you can expand this with more config
+  ################################################
+  # Git setup - can expand this with more config
+  ################################################
   programs.git = {
     enable = true;
     userName = "Rob";
@@ -180,7 +186,9 @@
     };
   };
 
+  ##############################################
   # Shell setup - let your dotfiles handle this instead
+  ##############################################
   # programs.zsh = {
   #   enable = true;
   #   enableCompletion = true;
@@ -198,7 +206,9 @@
   #   # };
   # };
 
+  #######################################################
   # Firefox config - expanded with your current preferences
+  #######################################################
   programs.firefox = {
     enable = true;
     profiles.default = {
@@ -282,7 +292,9 @@
     };
   };
 
-  # VS Code if you use it
+  ########################
+  # VS Code
+  ########################
   # programs.vscode = {
   #   enable = true;
   #   extensions = with pkgs.vscode-extensions; [
@@ -291,34 +303,48 @@
   #   ];
   # };
 
+  #########################################
   # Direnv for project-specific environments
+  #########################################
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
     nix-direnv.enable = true;
   };
 
+  ####################################
   # XDG directories and dotfiles management
+  ####################################
   xdg.enable = true;
 
+  ############################
   # Link your existing dotfiles
+  ############################
   # Example: if you have a ~/.zshrc you want to manage
   # home.file.".zshrc".source = ./dotfiles/zshrc;
 
+  ##################################################
   # For XDG config files (stuff that goes in ~/.config/)
+  ##################################################
   # xdg.configFile."alacritty/alacritty.yml".source = ./dotfiles/alacritty.yml;
   # xdg.configFile."nvim".source = ./dotfiles/nvim;  # whole directories work too
 
-  # OBS dotfiles (if you have them)
+  ################################
+  # OBS dotfiles
+  ################################
   # xdg.configFile."obs-studio" = {
   #   source = ./dotfiles/obs-studio;
   #   recursive = true;
   # };
 
+  ##########################################
   # Font configuration (user-specific fonts)
+  ##########################################
   fonts.fontconfig.enable = true;
 
+  ####################################################
   # This value determines the Home Manager release that your
   # configuration is compatible with
+  ####################################################
   home.stateVersion = "25.11";
 }
