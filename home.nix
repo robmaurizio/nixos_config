@@ -20,6 +20,8 @@
     obs-studio
     onlyoffice-bin
     qbittorrent
+    slack
+    vscode
 
     # Development (user-specific)
     nodejs
@@ -35,9 +37,8 @@
     gnomeExtensions.pop-shell
 
     # Other useful GUI apps you might want
-    # slack
-    # spotify
-    # vscode
+    slack
+    spotify
   ];
 
   # dconf settings for GNOME apps
@@ -118,14 +119,6 @@
       core.editor = "vim";
     };
 
-    # Maybe add some aliases
-    aliases = {
-      br = "branch";
-      co = "checkout";
-      st = "status";
-    };
-  };
-
   # Shell setup - let your dotfiles handle this instead
   # programs.zsh = {
   #   enable = true;
@@ -135,13 +128,6 @@
   #
   #   # Let your dotfiles handle aliases and custom config
   #   # Don't duplicate stuff here if your dotfiles already do it
-  #
-  #   # Oh My Zsh if you want it (optional)
-  #   # oh-my-zsh = {
-  #   #   enable = true;
-  #   #   theme = "robbyrussell";
-  #   #   plugins = [ "git" "sudo" "docker" ];
-  #   # };
   # };
 
   # Firefox config - expanded with your current preferences
@@ -222,8 +208,8 @@
         multi-account-containers
         noscript
         ublock-origin
-        # joplin-web-clipper  # uncomment if available
-        # linkding-extension  # uncomment if available
+        joplin-web-clipper
+        linkding-extension
       ];
     };
   };
@@ -252,12 +238,6 @@
     enableZshIntegration = true;
     nix-direnv.enable = true;
   };
-
-  # Maybe configure some other programs you use
-  # programs.tmux = {
-  #   enable = true;
-  #   # Add tmux config here
-  # };
 
   # XDG directories and dotfiles management
   xdg.enable = true;
