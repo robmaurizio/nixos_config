@@ -46,6 +46,34 @@
       last-panel = "applications";
     };
 
+    "org/gnome/shell/weather" = {
+      automatic-location = true;
+    };
+
+    "org/gnome/system/location" = {
+      enabled = true;
+    };
+
+    "org/gnome/shell" = {
+      favorite-apps = [
+        "org.gnome.Nautilus.desktop"
+        "com.onepassword.OnePassword.desktop" 
+        "bitwarden.desktop"
+        "firefox.desktop"
+        "org.gnome.Geary.desktop"
+        "joplin.desktop"
+        "com.obsproject.Studio.desktop"
+        "com.spotify.Client.desktop"
+        "com.slack.Slack.desktop"
+      ];
+      enabled-extensions = [ "pop-shell@system76.com" ];
+      allow-extension-installation = true;
+    };
+
+    "org/gnome/desktop/calendar" = {
+      show-weekdate = false;
+    };
+
     # Disable notifications for various apps
     "org/gnome/desktop/notifications/application/org-gnome-decibels" = {
       enable = false;
