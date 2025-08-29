@@ -20,41 +20,48 @@
     obs-studio
     onlyoffice-bin
     qbittorrent
-    
+
     # Development (user-specific)
     nodejs
     python3
-    
+
     # Utilities
     appimage-run
-    
+
     # GNOME extras
     gnome-tweaks
     gnomeExtensions.appindicator
     gnomeExtensions.dash-to-dock
-    gnomeExtensions.pop-shell  # tiling if you're into that
-    
+    gnomeExtensions.pop-shell
+
     # Other useful GUI apps you might want
-    # discord
     # slack
     # spotify
-    # thunderbird
     # vscode
   ];
+
+  # dconf settings for GNOME apps
+  dconf.settings = {
+    "org/gnome/Console" = {
+      custom-font = "Fira Code 11";
+      ignore-scrollback-limit = true;
+      audible-bell = false;
+    };
+  };
 
   # Git setup - you can expand this with more config
   programs.git = {
     enable = true;
     userName = "Rob";
-    userEmail = "your-real-email@example.com";  # Update this!
-    
+    userEmail = "rob@maurizio.ooo";
+
     # Add some useful git config
     extraConfig = {
       init.defaultBranch = "main";
       pull.rebase = false;
       core.editor = "vim";
     };
-    
+
     # Maybe add some aliases
     aliases = {
       br = "branch";
@@ -69,10 +76,10 @@
   #   enableCompletion = true;
   #   autosuggestion.enable = true;
   #   syntaxHighlighting.enable = true;
-  #   
+  #
   #   # Let your dotfiles handle aliases and custom config
   #   # Don't duplicate stuff here if your dotfiles already do it
-  #   
+  #
   #   # Oh My Zsh if you want it (optional)
   #   # oh-my-zsh = {
   #   #   enable = true;
@@ -92,7 +99,7 @@
         "privacy.userContext.enabled" = true;
         "privacy.userContext.ui.enabled" = true;
         "privacy.clearOnShutdown_v2.formdata" = true;
-        
+
         # Telemetry & Data Collection (disable)
         "toolkit.telemetry.unified" = false;
         "toolkit.telemetry.archive.enabled" = false;
@@ -105,7 +112,7 @@
         "datareporting.policy.dataSubmissionEnabled" = false;
         "datareporting.usage.uploadEnabled" = false;
         "app.shield.optoutstudies.enabled" = false;
-        
+
         # Network & DNS
         "network.dns.disableIPv6" = true;
         "network.dns.disablePrefetch" = true;
@@ -115,7 +122,7 @@
         "network.trr.mode" = 2;
         "network.trr.uri" = "https://dns.nextdns.io/f88fd2";
         "network.trr.custom_uri" = "https://dns.nextdns.io/f88fd2";
-        
+
         # Browser behavior
         "browser.aboutConfig.showWarning" = false;
         "browser.discovery.enabled" = false;
@@ -135,18 +142,18 @@
         "browser.download.always_ask_before_handling_new_types" = true;
         "browser.compactmode.show" = true;
         "browser.startup.page" = 3; # Restore previous session
-        
+
         # UI & Visual
         "sidebar.revamp" = true;
         "sidebar.verticalTabs" = true;
         "browser.touchmode.auto" = false;
-        
+
         # Autofill & Forms
         "signon.autofillForms" = false;
         "signon.generation.enabled" = false;
         "signon.management.page.breach-alerts.enabled" = false;
         "dom.forms.autocomplete.formautofill" = false;
-        
+
         # Font preferences
         "font.name.sans-serif.x-western" = "Roboto";
         "font.name.serif.x-western" = "Roboto Serif 14pt";
@@ -198,15 +205,15 @@
 
   # XDG directories and dotfiles management
   xdg.enable = true;
-  
+
   # Link your existing dotfiles
   # Example: if you have a ~/.zshrc you want to manage
   # home.file.".zshrc".source = ./dotfiles/zshrc;
-  
+
   # For XDG config files (stuff that goes in ~/.config/)
   # xdg.configFile."alacritty/alacritty.yml".source = ./dotfiles/alacritty.yml;
   # xdg.configFile."nvim".source = ./dotfiles/nvim;  # whole directories work too
-  
+
   # OBS dotfiles (if you have them)
   # xdg.configFile."obs-studio" = {
   #   source = ./dotfiles/obs-studio;
