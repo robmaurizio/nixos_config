@@ -315,7 +315,19 @@ in
   };
 
   # Add user.js for the "giant JSON / UI layout" prefs
-  xdg.configFile."mozilla/firefox/default/user.js".source = ./firefox-user.js;
+  xdg.configFile = {
+    "mozilla/firefox/default/user.js".source = ./firefox-user.js;
+  } // lib.optionalAttrs kdriveExists {
+    "autostart/kdrive.desktop".text = ''
+      [Desktop Entry]
+      Name=kDrive
+      Exec=appimage-run ${kdriveAppImage}
+      Type=Application
+      StartupNotify=false
+      Hidden=false
+      X-GNOME-Autostart-enabled=true
+    '';
+  };
 
   ########################
   # VS Code
@@ -428,21 +440,6 @@ in
   # XDG directories and dotfiles management
   ####################################
   xdg.enable = true;
-
-  ############################
-  # XDG Autostart
-  ############################
-  xdg.configFile = lib.optionalAttrs kdriveExists {
-    "autostart/kdrive.desktop".text = ''
-      [Desktop Entry]
-      Name=kDrive
-      Exec=appimage-run ${kdriveAppImage}
-      Type=Application
-      StartupNotify=false
-      Hidden=false
-      X-GNOME-Autostart-enabled=true
-    '';
-  };
 
 
   ############################
