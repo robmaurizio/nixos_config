@@ -1,9 +1,5 @@
-{ config, pkgs, inputs ? {}, lib, ... }:
+{ config, pkgs, inputs ? {}, ... }:
 
-let
-  kdriveAppImage = "/home/rob/.local/bin/kdrive.AppImage";
-  kdriveExists = builtins.pathExists kdriveAppImage;
-in
 {
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
@@ -34,12 +30,6 @@ in
     slack
     spotify
     vscode
-  ] ++ lib.optionals kdriveExists [
-    # Wrap the AppImage so it's in PATH (only if it exists)
-    (pkgs.runCommand "kdrive" { } ''
-      mkdir -p $out/bin
-      ln -s ${kdriveAppImage} $out/bin/kdrive
-    '')
   ];
 
   ##################################
@@ -315,19 +305,7 @@ in
   };
 
   # Add user.js for the "giant JSON / UI layout" prefs
-  xdg.configFile = {
-    "mozilla/firefox/default/user.js".source = ./firefox-user.js;
-  } // lib.optionalAttrs kdriveExists {
-    "autostart/kdrive.desktop".text = ''
-      [Desktop Entry]
-      Name=kDrive
-      Exec=appimage-run ${kdriveAppImage}
-      Type=Application
-      StartupNotify=false
-      Hidden=false
-      X-GNOME-Autostart-enabled=true
-    '';
-  };
+  xdg.configFile."mozilla/firefox/default/user.js".source = ./firefox-user.js;
 
   ########################
   # VS Code
@@ -440,7 +418,6 @@ in
   # XDG directories and dotfiles management
   ####################################
   xdg.enable = true;
-
 
   ############################
   # Link your existing dotfiles
