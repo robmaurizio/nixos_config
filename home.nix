@@ -432,14 +432,17 @@ in
   ############################
   # XDG Autostart
   ############################
-  xdg.autostart.programs = lib.optionals kdriveExists [
-    {
-      name = "kDrive";
-      command = "appimage-run ${kdriveAppImage}";
-      startupNotify = false;
-      hidden = true;  # avoids annoying notification
-    }
-  ];
+  xdg.configFile = lib.optionalAttrs kdriveExists {
+    "autostart/kdrive.desktop".text = ''
+      [Desktop Entry]
+      Name=kDrive
+      Exec=appimage-run ${kdriveAppImage}
+      Type=Application
+      StartupNotify=false
+      Hidden=false
+      X-GNOME-Autostart-enabled=true
+    '';
+  };
 
 
   ############################
