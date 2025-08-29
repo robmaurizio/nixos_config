@@ -14,39 +14,6 @@
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
   
-  # GNOME dconf settings
-  programs.dconf = {
-    enable = true;
-    profiles.user.databases = [{
-      settings = {
-        "org/gnome/shell/weather" = {
-          automatic-location = true;
-        };
-        "org/gnome/system/location" = {
-          enabled = true;
-        };
-        "org/gnome/shell" = {
-          favorite-apps = [
-            "org.gnome.Nautilus.desktop"
-            "com.onepassword.OnePassword.desktop" 
-            "bitwarden.desktop"
-            "firefox.desktop"
-            "org.gnome.Geary.desktop"
-            "joplin.desktop"
-            "com.obsproject.Studio.desktop"
-            "com.spotify.Client.desktop"
-            "com.slack.Slack.desktop"
-          ];
-          enabled-extensions = [ "pop-shell@system76.com" ];
-          allow-extension-installation = true;
-        };
-        "org/gnome/desktop/calendar" = {
-          show-weekdate = false;
-        };
-      };
-    }];
-  };
-  
   # Audio
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
