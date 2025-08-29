@@ -54,6 +54,11 @@
       enabled = true;
     };
 
+    "org/gnome/desktop/peripherals/mouse" = {
+      speed = 0.170940170940171;
+      natural-scroll = false;
+    };
+
     "org/gnome/shell" = {
       favorite-apps = [
         "org.gnome.Nautilus.desktop"
