@@ -207,12 +207,15 @@
   # };
 
   #######################################################
-  # Firefox config - expanded with your current preferences
+  # Firefox config - split prefs: Nix settings + user.js
   #######################################################
   programs.firefox = {
     enable = true;
+
     profiles.default = {
       name = "Default";
+
+      # Declarative prefs that are easy to manage in Nix
       settings = {
         # Privacy & Security
         "privacy.globalprivacycontrol.enabled" = true;
@@ -280,7 +283,8 @@
         "font.name.monospace.x-western" = "Roboto Mono";
         "font.minimum-size.x-western" = 9;
       };
-      # Extensions (now available through flake inputs)
+
+      # Extensions
       extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
         bitwarden
         multi-account-containers
@@ -291,6 +295,9 @@
       ];
     };
   };
+
+  # Add user.js for the "giant JSON / UI layout" prefs
+  xdg.configFile."mozilla/firefox/default/user.js".source = ./firefox-user.js;
 
   ########################
   # VS Code
