@@ -320,30 +320,66 @@
     executable = true;
     text = ''
       #!/usr/bin/env bash
-      # Usage: ./config-watch-diff.sh <app-name>
+      # config-watch-diff.sh
+      #
+      # Watches a config directory for changes and shows diffs.
+      #
+      # Usage examples:
+      #   config-watch-diff.sh firefox
+      #   config-watch-diff.sh ~/.mozilla/firefox
+      #   config-watch-diff.sh obs-studio
+
       APP="$1"
-      CONF_DIR="$HOME/.config/$APP"
+
+      if [[ -z "$APP" ]]; then
+        echo "Usage: $0 <app-name-or-path>"
+        exit 1
+      fi
+
+      # Determine config directory
+      case "$APP" in
+        # Special cases
+        firefox)
+          CONF_DIR="$HOME/.mozilla/firefox"
+          ;;
+        *)
+          # If input looks like a path, resolve it
+          if [[ "$APP" = /* || "$APP" = ~* || "$APP" = .* ]]; then
+            CONF_DIR=$(realpath "$APP")
+          else
+            CONF_DIR="$HOME/.config/$APP"
+          fi
+          ;;
+      esac
+
       if [ ! -d "$CONF_DIR" ]; then
         echo "Config directory $CONF_DIR not found"
         exit 1
       fi
+
       echo "Watching $CONF_DIR for changes..."
       echo "Press Ctrl+C to stop."
+
       # Temporary directory for storing snapshots
       SNAP_DIR=$(mktemp -d)
+
       # Function to snapshot current state of files
       snapshot() {
         find "$CONF_DIR" -type f | while read -r file; do
           cp "$file" "$SNAP_DIR/$(echo "$file" | tr '/' '_')" 2>/dev/null
         done
       }
+
       # Initial snapshot
       snapshot
+
       # Start watching for changes
       inotifywait -m -r -e modify,create,delete,move "$CONF_DIR" --format '%w%f %e' | while read FILE EVENT; do
         SNAP_FILE="$SNAP_DIR/$(echo "$FILE" | tr '/' '_')"
+
         echo
         echo "🔄 Change detected: $FILE ($EVENT)"
+
         if [[ "$EVENT" == *"MODIFY"* ]] && [ -f "$FILE" ]; then
           if [ -f "$SNAP_FILE" ]; then
             echo "---- diff ----"
@@ -361,6 +397,7 @@
       done
     '';
   };
+
 
   ####################################
   # XDG directories and dotfiles management
