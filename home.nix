@@ -59,6 +59,40 @@
       natural-scroll = false;
     };
 
+    "org/gnome/desktop/screen-time-limits" = {
+      daily-limit-enabled = false;
+    };
+
+    "org/gnome/desktop/search-providers" = {
+      disabled = [
+        "org.gnome.Epiphany.desktop"
+        "org.gnome.clocks.desktop"
+        "org.gnome.Software.desktop"
+        "org.gnome.seahorse.Application.desktop"
+      ];
+    };
+
+    "org/gnome/desktop/screensaver" = {
+      lock-enabled = true;
+      lock-delay = 120;
+    };
+
+    "org/gnome/desktop/notifications" = {
+      show-in-lock-screen = false;
+    };
+
+    "org/gnome/desktop/sound" = {
+      event-sounds = true;
+    };
+
+    "org/gnome/desktop/interface" = {
+      font-antialiasing = "rgba";
+    };
+
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "appmenu:minimize,close";
+    };
+
     "org/gnome/shell" = {
       favorite-apps = [
         "org.gnome.Nautilus.desktop"
@@ -80,6 +114,10 @@
     };
 
     # Disable notifications for various apps
+    "org/gnome/desktop/notifications/application/org-gnome-nautilus" = {
+      show-banners = false;
+      enable = false;
+    };
     "org/gnome/desktop/notifications/application/org-gnome-decibels" = {
       enable = false;
     };
@@ -237,8 +275,8 @@
         multi-account-containers
         noscript
         ublock-origin
-        # joplin-web-clipper  # uncomment if available
-        # linkding-extension  # uncomment if available
+        joplin-web-clipper
+        linkding-extension
       ];
     };
   };
@@ -258,12 +296,6 @@
     enableZshIntegration = true;
     nix-direnv.enable = true;
   };
-
-  # Maybe configure some other programs you use
-  # programs.tmux = {
-  #   enable = true;
-  #   # Add tmux config here
-  # };
 
   # XDG directories and dotfiles management
   xdg.enable = true;
@@ -287,5 +319,5 @@
 
   # This value determines the Home Manager release that your
   # configuration is compatible with
-  home.stateVersion = "25.11";  # Match your system version
+  home.stateVersion = "25.11";
 }
