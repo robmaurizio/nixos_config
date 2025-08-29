@@ -261,5 +261,5 @@
 
   # This value determines the Home Manager release that your
   # configuration is compatible with
-  home.stateVersion = "24.05";  # Match your system version
+  home.stateVersion = "25.11";
 }
