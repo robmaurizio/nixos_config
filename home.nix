@@ -312,6 +312,56 @@
     nix-direnv.enable = true;
   };
 
+  ##################
+  # Custom Scripts #
+  ##################
+  home.file."config-watch-diff.sh" = {
+    target = ".local/bin/config-watch-diff.sh";
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      # Usage: ./config-watch-diff.sh <app-name>
+      APP="$1"
+      CONF_DIR="$HOME/.config/$APP"
+      if [ ! -d "$CONF_DIR" ]; then
+        echo "Config directory $CONF_DIR not found"
+        exit 1
+      fi
+      echo "Watching $CONF_DIR for changes..."
+      echo "Press Ctrl+C to stop."
+      # Temporary directory for storing snapshots
+      SNAP_DIR=$(mktemp -d)
+      # Function to snapshot current state of files
+      snapshot() {
+        find "$CONF_DIR" -type f | while read -r file; do
+          cp "$file" "$SNAP_DIR/$(echo "$file" | tr '/' '_')" 2>/dev/null
+        done
+      }
+      # Initial snapshot
+      snapshot
+      # Start watching for changes
+      inotifywait -m -r -e modify,create,delete,move "$CONF_DIR" --format '%w%f %e' | while read FILE EVENT; do
+        SNAP_FILE="$SNAP_DIR/$(echo "$FILE" | tr '/' '_')"
+        echo
+        echo "🔄 Change detected: $FILE ($EVENT)"
+        if [[ "$EVENT" == *"MODIFY"* ]] && [ -f "$FILE" ]; then
+          if [ -f "$SNAP_FILE" ]; then
+            echo "---- diff ----"
+            diff -u "$SNAP_FILE" "$FILE" || echo "(no textual diff or binary file)"
+            echo "--------------"
+          fi
+          cp "$FILE" "$SNAP_FILE"
+        elif [[ "$EVENT" == *"CREATE"* ]]; then
+          echo "New file created: $FILE"
+          cp "$FILE" "$SNAP_FILE"
+        elif [[ "$EVENT" == *"DELETE"* ]]; then
+          echo "File deleted: $FILE"
+          rm -f "$SNAP_FILE"
+        fi
+      done
+    '';
+  };
+
   ####################################
   # XDG directories and dotfiles management
   ####################################
