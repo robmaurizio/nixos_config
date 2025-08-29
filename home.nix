@@ -47,6 +47,62 @@
       ignore-scrollback-limit = true;
       audible-bell = false;
     };
+
+    "org/gnome/nautilus/preferences" = {
+      search-filter-time-type = "last_modified";
+      default-folder-viewer = "list-view";
+    };
+
+    "org/gnome/control-center" = {
+      last-panel = "applications";
+    };
+
+    # Disable notifications for various apps
+    "org/gnome/desktop/notifications/application/org-gnome-decibels" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/org-gnome-calculator" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/org-gnome-snapshot" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/org-gnome-characters" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/com-github-hluk-copyq" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/org-gnome-evince" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/simple-scan" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/htop" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/org-gnome-loupe" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/yelp" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/org-gnome-logs" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/org-gnome-totem" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/vim" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/xterm" = {
+      enable = false;
+    };
+    "org/gnome/desktop/notifications/application/org-gnome-weather" = {
+      enable = false;
+    };
   };
 
   # Git setup - you can expand this with more config
