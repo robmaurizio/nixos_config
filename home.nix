@@ -18,6 +18,7 @@
     gnomeExtensions.appindicator
     gnomeExtensions.dash-to-dock
     gnomeExtensions.pop-shell
+    inotify-tools
     joplin-desktop
     nodejs
     obs-studio
