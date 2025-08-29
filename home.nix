@@ -214,8 +214,8 @@
   #   # };
   # };
 
-  #######################################################
-  # Firefox config - split prefs: Nix settings + user.js
+#######################################################
+  # Firefox config - Unified into a single block
   #######################################################
   programs.firefox = {
     enable = true;
@@ -223,15 +223,13 @@
     profiles.default = {
       name = "Default";
 
-      # Declarative prefs that are easy to manage in Nix
+      # All settings are now managed declaratively here.
       settings = {
-        # Privacy & Security
+        # --- YOUR EXISTING SETTINGS ---
         "privacy.globalprivacycontrol.enabled" = true;
         "privacy.userContext.enabled" = true;
         "privacy.userContext.ui.enabled" = true;
         "privacy.clearOnShutdown_v2.formdata" = true;
-
-        # Telemetry & Data Collection (disable)
         "toolkit.telemetry.unified" = false;
         "toolkit.telemetry.archive.enabled" = false;
         "toolkit.telemetry.bhrPing.enabled" = false;
@@ -243,8 +241,6 @@
         "datareporting.policy.dataSubmissionEnabled" = false;
         "datareporting.usage.uploadEnabled" = false;
         "app.shield.optoutstudies.enabled" = false;
-
-        # Network & DNS
         "network.dns.disableIPv6" = true;
         "network.dns.disablePrefetch" = true;
         "network.http.speculative-parallel-limit" = 0;
@@ -253,8 +249,6 @@
         "network.trr.mode" = 2;
         "network.trr.uri" = "https://dns.nextdns.io/f88fd2";
         "network.trr.custom_uri" = "https://dns.nextdns.io/f88fd2";
-
-        # Browser behavior
         "browser.aboutConfig.showWarning" = false;
         "browser.discovery.enabled" = false;
         "browser.newtabpage.activity-stream.showSponsored" = false;
@@ -273,23 +267,29 @@
         "browser.download.always_ask_before_handling_new_types" = true;
         "browser.compactmode.show" = true;
         "browser.startup.page" = 3; # Restore previous session
-
-        # UI & Visual
         "sidebar.revamp" = true;
         "sidebar.verticalTabs" = true;
         "browser.touchmode.auto" = false;
-
-        # Autofill & Forms
         "signon.autofillForms" = false;
         "signon.generation.enabled" = false;
         "signon.management.page.breach-alerts.enabled" = false;
         "dom.forms.autocomplete.formautofill" = false;
-
-        # Font preferences
         "font.name.sans-serif.x-western" = "Roboto";
         "font.name.serif.x-western" = "Roboto Serif 14pt";
         "font.name.monospace.x-western" = "Roboto Mono";
         "font.minimum-size.x-western" = 9;
+
+        # --- SETTINGS FROM YOUR firefox-user.js ---
+        "browser.toolbarbuttons.introduced.sidebar-button" = true;
+        "browser.uidensity" = 1;
+        "browser.startup.homepage" = "http://192.168.86.60:32770/bookmarks";
+
+        # For these long JSON strings, we use '' (indented strings)
+        # to avoid needing to escape all the double quotes.
+        "browser.uiCustomization.horizontalTabsBackup" = ''{"placements":{"widget-overflow-fixed-list":[],"nav-bar":["sidebar-button","back-button","forward-button","stop-reload-button","customizableui-special-spring1","vertical-spacer","urlbar-container","customizableui-special-spring2","downloads-button","8419486a-54e9-11e8-9401-ac9e17909436-browser-action","ublock0_raymondhill_net-browser-action","446900e4-71c2-419f-a6a7-df9c091e268b-browser-action","unified-extensions-button"],"toolbar-menubar":["menubar-items"],"TabsToolbar":["firefox-view-button","tabbrowser-tabs","new-tab-button","alltabs-button"],"vertical-tabs":[],"PersonalToolbar":["personal-bookmarks"],"unified-extensions-area":["61a05c39-ad45-4086-946f-32adb0a40a9d-browser-action","_testpilot-containers-browser-action","73a6fe31-595d-460b-a920-fcc0f8843232-browser-action"]},"seen":["61a05c39-ad45-4086-946f-32adb0a40a9d-browser-action","8419486a-54e9-11e8-9401-ac9e17909436-browser-action","_testpilot-containers-browser-action","ublock0_raymondhill_net-browser-action","446900e4-71c2-419f-a6a7-df9c091e268b-browser-action","73a6fe31-595d-460b-a920-fcc0f8843232-browser-action","developer-button","screenshot-button"],"dirtyAreaCache":["unified-extensions-area","nav-bar"],"currentVersion":23,"newElementCount":5}'';
+        "browser.uiCustomization.horizontalTabstrip" = ''["firefox-view-button","tabbrowser-tabs","new-tab-button","alltabs-button"]'';
+        "browser.uiCustomization.navBarWhenVerticalTabs" = ''["back-button","forward-button","stop-reload-button","customizableui-special-spring1","vertical-spacer","urlbar-container","customizableui-special-spring2","downloads-button","unified-extensions-button","firefox-view-button","new-tab-button","alltabs-button","ublock0_raymondhill_net-browser-action","446900e4-71c2-419f-a6a7-df9c091e268b-browser-action","_testpilot-containers-browser-action"]'';
+        "browser.uiCustomization.state" = ''{"placements":{"widget-overflow-fixed-list":[],"nav-bar":["sidebar-button","back-button","forward-button","stop-reload-button","customizableui-special-spring1","vertical-spacer","urlbar-container","customizableui-special-spring2","downloads-button","firefox-view-button","new-tab-button","alltabs-button","8419486a-54e9-11e8-9401-ac9e17909436-browser-action","ublock0_raymondhill_net-browser-action","446900e4-71c2-419f-a6a7-df9c091e268b-browser-action","unified-extensions-button"],"toolbar-menubar":["menubar-items"],"TabsToolbar":[],"vertical-tabs":["tabbrowser-tabs"],"PersonalToolbar":["personal-bookmarks"],"unified-extensions-area":["61a05c39-ad45-4086-946f-32adb0a40a9d-browser-action","_testpilot-containers-browser-action","73a6fe31-595d-460b-a920-fcc0f8843232-browser-action"]},"seen":["61a05c39-ad45-4086-946f-32adb0a40a9d-browser-action","8419486a-54e9-11e8-9401-ac9e17909436-browser-action","_testpilot-containers-browser-action","ublock0_raymondhill_net-browser-action","446900e4-71c2-419f-a6a7-df9c091e268b-browser-action","73a6fe31-595d-460b-a920-fcc0f8843232-browser-action","developer-button","screenshot-button"],"dirtyAreaCache":["unified-extensions-area","nav-bar","TabsToolbar","vertical-tabs"],"currentVersion":23,"newElementCount":5}'';
       };
 
       # Extensions
@@ -303,9 +303,6 @@
       ];
     };
   };
-
-  # Add user.js for the "giant JSON / UI layout" prefs
-  xdg.configFile."mozilla/firefox/default/user.js".source = ./firefox-user.js;
 
   ########################
   # VS Code
